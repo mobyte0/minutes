@@ -1,4 +1,3 @@
-"""Generates a file for taking cclub minutes"""
 import requests
 import datetime
 import os
@@ -13,8 +12,11 @@ if MONTH < 10:
 else:
     FILE_MONTH = "{}".format(MONTH)
 DAY = TODAY.day
-FILE_DAY = DAY
-if 4 <= DAY <= 20 or 24 <= day <= 30:
+if int(DAY) < 10:
+    FILE_DAY = '0' + str(DAY)
+else:
+    FILE_DAY = DAY
+if 4 <= DAY <= 20 or 24 <= DAY <= 30:
     FORMAL_DAY = "{}th".format(DAY)
 else:
     FORMAL_DAY = "{}{}".format(DAY, ["st", "nd", "rd"][DAY % 10 - 1])
@@ -46,8 +48,8 @@ LINE5 = "### Topic"
 def filecheck():
     """Checks if the file can be created and if it will overwrite an existing file."""
     if os.path.isfile(FILENAME) == True:
-        print "In this directory there is already a file for today's minutes. Proceed? (y, n, or o)"
-        print "WARNING: THIS WILL DELETE THE CURRENT FILE"
+        print("In this directory there is already a file for today's minutes. Proceed? (y, n, or o)")
+        print("WARNING: THIS WILL DELETE THE CURRENT FILE")
         user_input = raw_input("> ")
         if user_input == "y":
             user_file = open(FILENAME, 'w+')
@@ -62,7 +64,7 @@ def filecheck():
         elif user_input == "o":
             os.system("emacsclient -nc $argv {}".format(FILENAME)) # See above if you would like to change the text editor.
         elif user_input != "n" or user_input != "y" or user_input != "o":
-            print "Invalid input."
+            print("Invalid input.")
             filecheck()
     elif os.path.isfile(FILENAME) == False:
         user_file = open(FILENAME, 'w+')
